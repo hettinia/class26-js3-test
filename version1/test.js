@@ -93,7 +93,8 @@ async function fetchJSON(url) {
 async function main(url) {
     
     await fetchJSON(url)
-    .then ( users => {
+    .then ( res => {
+        const users = res.data;
         for (let i=0; i<=2; i++) {
             const ul = document.createElement('ul');
             body.appendChild(ul);
