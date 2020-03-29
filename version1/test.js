@@ -1,3 +1,4 @@
+'use strict';
 // VERSION 1
 
 /*
@@ -12,6 +13,31 @@ Hint: use the modulo operator (%) to figure out if it's a multiple of 3/5. Make 
 Hint: the order of conditional statements is important!
 */
 
+// Answer-1
+function jackpotNums(cb) {
+    for (let i=1; i<=100; i++) {
+        if (i % 3 === 0 && i % 5 === 0){
+            cb('Jackpot!');
+        } 
+        else if (i % 3 === 0) {
+            cb('multiple of 3');
+        }
+        else if (i % 5 === 0) {
+            cb('This is a multiple of 5');
+        }
+        else {
+            cb(i);
+        }
+    }
+}
+
+function printResult(res) {
+    console.log(res);
+}
+
+jackpotNums(printResult);
+
+
 /*
 2.
 Using JavaScript only (adding HTML to index.html is NOT allowed), create a function that:
@@ -20,6 +46,20 @@ Using JavaScript only (adding HTML to index.html is NOT allowed), create a funct
 - When the button is clicked, inserts an image URL into an <img> tag and remove the button
 - Use the following image URL: https://avatars3.githubusercontent.com/u/20858568?s=200&v=4
 */
+
+// Answer-2
+const body = document.querySelector('body');
+const btn = document.createElement('button');
+btn.innerText = 'click me!';
+btn.style = 'font-size: 20px';
+body.appendChild(btn);
+const img = document.createElement('img');
+body.appendChild(img);
+btn.addEventListener('click', () => {
+    img.src = 'https://avatars3.githubusercontent.com/u/20858568?s=200&v=4';
+    body.removeChild(btn);
+});
+
 
 /*
 3.
@@ -30,3 +70,46 @@ Write a function that:
 - Creates an <ul> for each user
 - Makes use of async/await
 */
+
+// Answer-3
+
+async function fetchJSON(url) {
+
+    try {
+
+      const response = await fetch(url);
+      if (!response.statusText) {
+        throw new Error(`Network error: ${response.status},${response.statusText}`);
+      }
+      
+      return response.json();
+
+    } 
+    catch (error) {
+      console.log(error);
+    }
+}
+
+async function main(url) {
+    
+    await fetchJSON(url)
+    .then ( users => {
+        for (let i=0; i<=2; i++) {
+            const ul = document.createElement('ul');
+            body.appendChild(ul);
+            const liFirstName = document.createElement('li');
+            liFirstName.innerText = users[i].first_name;
+            const liLastName = document.createElement('li');
+            liLastName.innerText = users[i].last_name;
+            ul.appendChild(liFirstName);
+            ul.appendChild(liLastName);
+            
+        }
+    })
+    .catch (err);
+    console.log(err);
+    
+}
+
+const URL = 'https://reqres.in/api/users';
+main(URL);
